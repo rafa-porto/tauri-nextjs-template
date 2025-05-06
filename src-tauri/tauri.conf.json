@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tauri-nextjs-template",
+  "productName": "Snyp",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.snyp.app",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:3000",
@@ -12,9 +12,9 @@
   "app": {
     "windows": [
       {
-        "title": "tauri-nextjs-template",
-        "width": 800,
-        "height": 600,
+        "title": "Snyp",
+        "width": 1024,
+        "height": 768,
         "resizable": true,
         "fullscreen": false
       }

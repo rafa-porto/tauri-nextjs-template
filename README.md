@@ -1,115 +1,37 @@
-# Tauri 2.0 + Next.js 15 App Router Template
+# Screenshot App
 
-![Tauri window screenshot](public/tauri-nextjs-template-2_screenshot.png)
+**Screenshot App** é uma aplicação multiplataforma que permite capturar, editar e salvar imagens de forma fácil e rápida. Desenvolvido com **Tauri**, **Next.js** e **TailwindCSS**, o app é otimizado para **Windows**, **macOS** e **Linux**, proporcionando uma experiência de usuário moderna e eficiente.
 
-This is a [Tauri](https://v2.tauri.app/) project template using [Next.js](https://nextjs.org/),
-bootstrapped by combining [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app)
-and [`create tauri-app`](https://v2.tauri.app/start/create-project/).
+## Funcionalidades
 
-This template uses [`pnpm`](https://pnpm.io/) as the Node.js dependency
-manager, and uses the [App Router](https://nextjs.org/docs/app) model for Next.js.
+- **Captura de Tela**: Capture a tela inteira ou selecione uma área personalizada com atalhos de teclado ou interface gráfica.
+- **Edição Básica de Imagem**: Faça edições rápidas, como recorte, redimensionamento, anotações e desenho livre nas capturas de tela.
+- **Armazenamento e Exportação**: Salve as capturas em vários formatos (PNG, JPEG, etc.) e escolha o destino de armazenamento.
+- **Integração com Menu Bar** (macOS): Acesse rapidamente o app e suas funcionalidades diretamente do menu bar no macOS.
+- **Funcionalidades Avançadas**: Hotkeys personalizáveis, filtros de imagem e outras opções para melhorar a experiência de captura e edição.
 
-## Template Features
+## Tecnologias Usadas
 
-- TypeScript frontend using [Next.js 15](https://nextjs.org/) React framework
-- [TailwindCSS 4](https://tailwindcss.com/) as a utility-first atomic CSS framework
-  - The example page in this template app has been updated to use only TailwindCSS
-  - While not included by default, consider using
-    [React Aria components](https://react-spectrum.adobe.com/react-aria/index.html)
-    and/or [HeadlessUI components](https://headlessui.com/) for completely unstyled and
-    fully accessible UI components, which integrate nicely with TailwindCSS
-- Opinionated formatting and linting already setup and enabled
-  - [Biome](https://biomejs.dev/) for a combination of fast formatting, linting, and
-    import sorting of TypeScript code, and [ESLint](https://eslint.org/) for any missing
-    Next.js linter rules not covered by Biome
-  - [clippy](https://github.com/rust-lang/rust-clippy) and
-    [rustfmt](https://github.com/rust-lang/rustfmt) for Rust code
-- GitHub Actions to check code formatting and linting for both TypeScript and Rust
+- **Tauri**: Framework para criar apps desktop multiplataforma com WebView, garantindo alto desempenho e baixo consumo de recursos.
+- **Next.js**: Framework React para renderização do frontend e suporte a funcionalidades como Server-Side Rendering (SSR) e Static Site Generation (SSG).
+- **TailwindCSS**: Framework CSS utilitário para criar interfaces responsivas e modernas com eficiência.
+- **React**: Biblioteca JavaScript para construção de interfaces de usuário dinâmicas e reativas.
 
-## Getting Started
+## Contribuindo
 
-### Running development server and use Tauri window
+Se você quiser contribuir com o projeto, siga as etapas abaixo:
 
-After cloning for the first time, change your app identifier inside
-`src-tauri/tauri.conf.json` to your own:
+1. Faça um fork do repositório.
+2. Crie uma branch para sua feature (`git checkout -b feature/nome-da-feature`).
+3. Faça as modificações necessárias e commite as mudanças (`git commit -am 'Adiciona nova feature'`).
+4. Envie a branch para o repositório remoto (`git push origin feature/nome-da-feature`).
+5. Abra um pull request.
 
-```jsonc
-{
-  // ...
-  // The default "com.tauri.dev" will prevent you from building in release mode
-  "identifier": "com.my-application-name.app",
-  // ...
-}
+## Licença
+
+Este projeto está licenciado sob a [Licença MIT](LICENSE).
+
 ```
 
-To develop and run the frontend in a Tauri window:
-
-```shell
-pnpm tauri dev
+Esse `README.md` fornece uma visão geral do app, as tecnologias utilizadas, como rodar o projeto e como contribuir. Se precisar adicionar mais informações específicas ou personalizar, é só ajustar!
 ```
-
-This will load the Next.js frontend directly in a Tauri webview window, in addition to
-starting a development server on `localhost:3000`.
-Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> in a Chromium based WebView (e.g. on
-Windows) to open the web developer console from the Tauri window.
-
-### Building for release
-
-To export the Next.js frontend via SSG and build the Tauri application for release:
-
-```shell
-pnpm tauri build
-```
-
-### Source structure
-
-Next.js frontend source files are located in `src/` and Tauri Rust application source
-files are located in `src-tauri/`. Please consult the Next.js and Tauri documentation
-respectively for questions pertaining to either technology.
-
-## Caveats
-
-### Static Site Generation / Pre-rendering
-
-Next.js is a great React frontend framework which supports server-side rendering (SSR)
-as well as static site generation (SSG or pre-rendering). For the purposes of creating a
-Tauri frontend, only SSG can be used since SSR requires an active Node.js server.
-
-Please read into the Next.js documentation for [Static Exports](https://nextjs.org/docs/app/building-your-application/deploying/static-exports)
-for an explanation of supported / unsupported features and caveats.
-
-### `next/image`
-
-The [`next/image` component](https://nextjs.org/docs/basic-features/image-optimization)
-is an enhancement over the regular `<img>` HTML element with server-side optimizations
-to dynamically scale the image quality. This is only supported when deploying the
-frontend onto Vercel directly, and must be disabled to properly export the frontend
-statically. As such, the
-[`unoptimized` property](https://nextjs.org/docs/api-reference/next/image#unoptimized)
-is set to true for the `next/image` component in the `next.config.js` configuration.
-This will allow the image to be served as-is, without changes to its quality, size,
-or format.
-
-### ReferenceError: window/navigator is not defined
-
-If you are using Tauri's `invoke` function or any OS related Tauri function from within
-JavaScript, you may encounter this error when importing the function in a global,
-non-browser context. This is due to the nature of Next.js' dev server effectively
-running a Node.js server for SSR and hot module replacement (HMR), and Node.js does not
-have a notion of `window` or `navigator`.
-
-The solution is to ensure that the Tauri functions are imported as late as possible
-from within a client-side React component, or via [lazy loading](https://nextjs.org/docs/app/building-your-application/optimizing/lazy-loading).
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and
-  API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-And to learn more about Tauri, take a look at the following resources:
-
-- [Tauri Documentation - Guides](https://v2.tauri.app/start/) - learn about the Tauri
-  toolkit.

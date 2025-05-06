@@ -3,9 +3,14 @@ import { RoundedButton } from "@/components/RoundedButton";
 import { invoke } from "@tauri-apps/api/core";
 import Image from "next/image";
 import { useCallback, useState } from "react";
+import {
+  getScreenshotableMonitors,
+  getMonitorScreenshot,
+} from "tauri-plugin-screenshots-api";
 
 export default function Home() {
   const [greeted, setGreeted] = useState<string | null>(null);
+  const [screenshot, setScreenshot] = useState<string | null>(null);
   const greet = useCallback((): void => {
     invoke<string>("greet")
       .then((s) => {
@@ -14,6 +19,20 @@ export default function Home() {
       .catch((err: unknown) => {
         console.error(err);
       });
+  }, []);
+
+  const handleCapture = useCallback(async () => {
+    try {
+      const monitors = await getScreenshotableMonitors();
+      if (monitors.length === 0) {
+        alert("No monitor found!");
+        return;
+      }
+      const path = await getMonitorScreenshot(monitors[0].id);
+      setScreenshot(`asset://${path}`);
+    } catch (err: unknown) {
+      alert(`Error capturing screen: ${String(err)}`);
+    }
   }, []);
 
   return (
@@ -39,13 +58,21 @@ export default function Home() {
         </ol>
 
         <div className="flex flex-col gap-2 items-start">
-          <RoundedButton
-            onClick={greet}
-            title="Call &quot;greet&quot; from Rust"
-          />
+          <RoundedButton onClick={greet} title='Call "greet" from Rust' />
           <p className="break-words w-md">
             {greeted ?? "Click the button to call the Rust function"}
           </p>
+          <RoundedButton
+            onClick={() => handleCapture()}
+            title="Capture Screen"
+          />
+          {screenshot && (
+            <img
+              src={screenshot}
+              alt="Screenshot"
+              style={{ maxWidth: 400, border: "1px solid #ccc", marginTop: 8 }}
+            />
+          )}
         </div>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
